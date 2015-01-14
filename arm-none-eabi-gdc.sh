@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright © 2015 Michael V. Franklin
+# Copyright Â© 2015 Michael V. Franklin
 #
 # This file is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
