@@ -1,0 +1,6 @@
+MULTILIB_OPTIONS  += mcpu=cortex-m0/mcpu=cortex-m3/mcpu=cortex-m4 mfloat-abi=hard mfpu=fpv4-sp-d16
+MULTILIB_DIRNAMES += cortex-m0 cortex-m3 cortex-m4
+MULTILIB_REQUIRED += mcpu=cortex-m0
+MULTILIB_REQUIRED += mcpu=cortex-m3
+MULTILIB_REQUIRED += mcpu=cortex-m4 /mfloat-abi=hard /mfpu=fpv4-sp-d16
+MULTILIB_EXTRA_OPTS += mthumb

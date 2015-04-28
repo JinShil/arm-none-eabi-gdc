@@ -58,7 +58,6 @@ cd $BINUTILS_BUILD_DIR
   --target=$TARGET   \
   --prefix=$PREFIX   \
   --disable-nls      \
-  --disable-multilib \
   --with-gnu-as      \
   --with-gnu-ld      \
   --disable-libssp   
@@ -84,6 +83,7 @@ cd ..
 
 # Delete existing GCC source archive and download a new one
 #-------------------------------------------------------------------
+export GCC_MIRROR=http://ftpmirror.gnu.org/gcc
 export GCC_NAME=gcc-$GCC_VERSION
 export GCC_SOURCE_ARCHIVE=$GCC_NAME.tar.bz2
 
@@ -93,7 +93,7 @@ rm -rf $GCC_NAME
 
 # Extract GCC
 #-------------------------------------------------------------------
-wget http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/$GCC_NAME/$GCC_SOURCE_ARCHIVE
+wget $GCC_MIRROR/$GCC_NAME/$GCC_SOURCE_ARCHIVE
 tar xjfv $GCC_SOURCE_ARCHIVE
 rm -rf $GCC_SOURCE_ARCHIVE    # don't need archive file anymore
 
@@ -122,6 +122,10 @@ export GCC_BUILD_DIR=gcc-build
 rm -rf $GCC_BUILD_DIR  # remove existing folder
 mkdir $GCC_BUILD_DIR
 
+# Patch GCC
+#-------------------------------------------------------------------
+cp t-arm-elf $GCC_NAME/gcc/config/arm/
+
 # Configure and build GDC
 #-------------------------------------------------------------------
 cd $GCC_BUILD_DIR
@@ -131,13 +135,13 @@ cd $GCC_BUILD_DIR
   --disable-libssp         \
   --disable-libgomp        \
   --disable-libmudflap     \
-  --disable-multilib       \
   --disable-libphobos      \
   --disable-decimal-float  \
   --disable-libffi         \
   --disable-libmudflap     \
   --disable-libquadmath    \
   --disable-libssp         \
+  --disable-libstdcxx      \
   --disable-libstdcxx-pch  \
   --disable-nls            \
   --disable-shared         \
@@ -145,8 +149,6 @@ cd $GCC_BUILD_DIR
   --disable-tls            \
   --with-gnu-as            \
   --with-gnu-ld            \
-  --with-cpu=cortex-m4     \
-  --with-tune=cortex-m4    \
   --with-mode=thumb        \
   --without-headers               
   
