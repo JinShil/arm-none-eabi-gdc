@@ -26,13 +26,13 @@ set -e
 
 export TARGET=arm-none-eabi
 export PREFIX=`pwd`/result
-export GDC_VERSION=4.9
-export GCC_VERSION=$GDC_VERSION.2
+export GDC_VERSION=7
+export GCC_VERSION=$GDC_VERSION.1.0
 
 #===================================================================
 # BINUTILS
 #===================================================================
-export BINUTILS_NAME=binutils-2.25
+export BINUTILS_NAME=binutils-2.28
 export BINUTILS_SOURCE_ARCHIVE=$BINUTILS_NAME.tar.bz2
 
 # remove any existng files or folders
@@ -130,26 +130,27 @@ cp t-arm-elf $GCC_NAME/gcc/config/arm/
 #-------------------------------------------------------------------
 cd $GCC_BUILD_DIR
 ../$GCC_NAME/configure --target=$TARGET --prefix=$PREFIX \
-  --enable-languages=d     \
-  --disable-bootstrap      \
-  --disable-libssp         \
-  --disable-libgomp        \
-  --disable-libmudflap     \
-  --disable-libphobos      \
-  --disable-decimal-float  \
-  --disable-libffi         \
-  --disable-libmudflap     \
-  --disable-libquadmath    \
-  --disable-libssp         \
-  --disable-libstdcxx      \
-  --disable-libstdcxx-pch  \
-  --disable-nls            \
-  --disable-shared         \
-  --disable-threads        \
-  --disable-tls            \
-  --with-gnu-as            \
-  --with-gnu-ld            \
-  --with-mode=thumb        \
+  --enable-languages=d      \
+  --enable-checking=release \
+  --disable-bootstrap       \
+  --disable-libssp          \
+  --disable-libgomp         \
+  --disable-libmudflap      \
+  --disable-libphobos       \
+  --disable-decimal-float   \
+  --disable-libffi          \
+  --disable-libmudflap      \
+  --disable-libquadmath     \
+  --disable-libssp          \
+  --disable-libstdcxx       \
+  --disable-libstdcxx-pch   \
+  --disable-nls             \
+  --disable-shared          \
+  --disable-threads         \
+  --disable-tls             \
+  --with-gnu-as             \
+  --with-gnu-ld             \
+  --with-mode=thumb         \
   --without-headers               
   
 make -j4 all-gcc
