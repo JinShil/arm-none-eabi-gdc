@@ -36,8 +36,8 @@ export BINUTILS_NAME=binutils-2.28
 export BINUTILS_SOURCE_ARCHIVE=$BINUTILS_NAME.tar.bz2
 
 # remove any existng files or folders
-rm -f $BINUTILS_SOURCE_ARCHIVE   
-rm -rf $BINUTILS_NAME 
+rm -f $BINUTILS_SOURCE_ARCHIVE
+rm -rf $BINUTILS_NAME
 
 # Get and Extract binutils
 #-------------------------------------------------------------------
@@ -60,8 +60,8 @@ cd $BINUTILS_BUILD_DIR
   --disable-nls      \
   --with-gnu-as      \
   --with-gnu-ld      \
-  --disable-libssp   
-  
+  --disable-libssp
+
 make -j4 all
 make install
 cd ..
@@ -151,8 +151,8 @@ cd $GCC_BUILD_DIR
   --with-gnu-as             \
   --with-gnu-ld             \
   --with-mode=thumb         \
-  --without-headers               
-  
+  --without-headers
+
 make -j4 all-gcc
 make -j4 all-target-libgcc
 
