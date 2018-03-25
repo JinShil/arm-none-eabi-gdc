@@ -6,12 +6,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This file is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this file. If not, see <http://www.gnu.org/licenses/>.
 
@@ -27,12 +27,12 @@ set -e
 export TARGET=arm-none-eabi
 export PREFIX=`pwd`/result
 export GDC_VERSION=7
-export GCC_VERSION=$GDC_VERSION.1.0
+export GCC_VERSION=$GDC_VERSION.3.0
 
 #===================================================================
 # BINUTILS
 #===================================================================
-export BINUTILS_NAME=binutils-2.28
+export BINUTILS_NAME=binutils-2.29.1
 export BINUTILS_SOURCE_ARCHIVE=$BINUTILS_NAME.tar.bz2
 
 # remove any existng files or folders
@@ -85,7 +85,7 @@ cd ..
 #-------------------------------------------------------------------
 export GCC_MIRROR=http://ftpmirror.gnu.org/gcc
 export GCC_NAME=gcc-$GCC_VERSION
-export GCC_SOURCE_ARCHIVE=$GCC_NAME.tar.bz2
+export GCC_SOURCE_ARCHIVE=$GCC_NAME.tar.gz
 
 # Remove any existing files or folders
 rm -f $GCC_SOURCE_ARCHIVE
@@ -94,7 +94,7 @@ rm -rf $GCC_NAME
 # Extract GCC
 #-------------------------------------------------------------------
 wget $GCC_MIRROR/$GCC_NAME/$GCC_SOURCE_ARCHIVE
-tar xjfv $GCC_SOURCE_ARCHIVE
+tar xfv $GCC_SOURCE_ARCHIVE
 rm -rf $GCC_SOURCE_ARCHIVE    # don't need archive file anymore
 
 # Add GDC to GCC
