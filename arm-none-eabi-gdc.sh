@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright © 2015 Michael V. Franklin
+# Copyright © 2018 Michael V. Franklin
 #
 # This file is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,16 +24,15 @@
 # stop if an error is encountered
 set -e
 
-export TARGET=arm-none-eabi
-export PREFIX=`pwd`/result
-export GDC_VERSION=7
-export GCC_VERSION=$GDC_VERSION.3.0
+TARGET=arm-none-eabi
+PREFIX=`pwd`/result
+GDC_BRANCH=master
 
 #===================================================================
 # BINUTILS
 #===================================================================
-export BINUTILS_NAME=binutils-2.29.1
-export BINUTILS_SOURCE_ARCHIVE=$BINUTILS_NAME.tar.bz2
+BINUTILS_NAME=binutils-2.31.1
+BINUTILS_SOURCE_ARCHIVE=$BINUTILS_NAME.tar.bz2
 
 # remove any existng files or folders
 rm -f $BINUTILS_SOURCE_ARCHIVE
@@ -47,7 +46,7 @@ rm -rf $BINUTILS_SOURCE_ARCHIVE  # don't need archive file anymore
 
 # Create binutils build directory
 #-------------------------------------------------------------------
-export BINUTILS_BUILD_DIR=binutils-build
+BINUTILS_BUILD_DIR=binutils-build
 rm -rf $BINUTILS_BUILD_DIR  # remove any existing folders
 mkdir $BINUTILS_BUILD_DIR
 
@@ -73,19 +72,21 @@ rm -rf $BINUTILS_NAME
 #===================================================================
 # GDC and GCC
 #===================================================================
-export GDC_NAME=gdc
+GDC_NAME=gdc
 rm -rf $GDC_NAME              # remove any existing folders
-mkdir gdc
+mkdir $GDC_NAME
 git clone https://github.com/D-Programming-GDC/GDC.git $GDC_NAME
 cd $GDC_NAME
-git checkout gdc-$GDC_VERSION # checkout the appropriate branch
+git checkout $GDC_BRANCH # checkout the appropriate branch
+GCC_VERSION=$(cat gcc.version)
+GCC_VERSION=${GCC_VERSION:4}
 cd ..
 
 # Delete existing GCC source archive and download a new one
 #-------------------------------------------------------------------
-export GCC_MIRROR=http://ftpmirror.gnu.org/gcc
-export GCC_NAME=gcc-$GCC_VERSION
-export GCC_SOURCE_ARCHIVE=$GCC_NAME.tar.gz
+GCC_MIRROR=ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/snapshots
+GCC_NAME=gcc-$GCC_VERSION
+GCC_SOURCE_ARCHIVE=$GCC_NAME.tar.xz
 
 # Remove any existing files or folders
 rm -f $GCC_SOURCE_ARCHIVE
@@ -93,7 +94,7 @@ rm -rf $GCC_NAME
 
 # Extract GCC
 #-------------------------------------------------------------------
-wget $GCC_MIRROR/$GCC_NAME/$GCC_SOURCE_ARCHIVE
+wget $GCC_MIRROR/$GCC_VERSION/$GCC_SOURCE_ARCHIVE
 tar xfv $GCC_SOURCE_ARCHIVE
 rm -rf $GCC_SOURCE_ARCHIVE    # don't need archive file anymore
 
@@ -118,7 +119,7 @@ cd ..
 
 # Create GDC build directory
 #-------------------------------------------------------------------
-export GCC_BUILD_DIR=gcc-build
+GCC_BUILD_DIR=gcc-build
 rm -rf $GCC_BUILD_DIR  # remove existing folder
 mkdir $GCC_BUILD_DIR
 
