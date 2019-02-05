@@ -31,7 +31,7 @@ GDC_BRANCH=master
 #===================================================================
 # BINUTILS
 #===================================================================
-BINUTILS_NAME=binutils-2.31.1
+BINUTILS_NAME=binutils-2.32
 BINUTILS_SOURCE_ARCHIVE=$BINUTILS_NAME.tar.bz2
 
 # remove any existng files or folders
@@ -78,44 +78,18 @@ mkdir $GDC_NAME
 git clone https://github.com/D-Programming-GDC/GDC.git $GDC_NAME
 cd $GDC_NAME
 git checkout $GDC_BRANCH # checkout the appropriate branch
-GCC_VERSION=$(cat gcc.version)
-GCC_VERSION=${GCC_VERSION:4}
-cd ..
 
-# Delete existing GCC source archive and download a new one
-#-------------------------------------------------------------------
-GCC_MIRROR=ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/snapshots
-GCC_NAME=gcc-$GCC_VERSION
-GCC_SOURCE_ARCHIVE=$GCC_NAME.tar.xz
-
-# Remove any existing files or folders
-rm -f $GCC_SOURCE_ARCHIVE
-rm -rf $GCC_NAME
-
-# Extract GCC
-#-------------------------------------------------------------------
-wget $GCC_MIRROR/$GCC_VERSION/$GCC_SOURCE_ARCHIVE
-tar xfv $GCC_SOURCE_ARCHIVE
-rm -rf $GCC_SOURCE_ARCHIVE    # don't need archive file anymore
+# Get GCC source code
+git submodule update --init --depth 1000 gcc
 
 # Add GDC to GCC
 #-------------------------------------------------------------------
-cd gdc
-./setup-gcc.sh ../$GCC_NAME
-cd ..
+./setup-gcc.sh gcc
 
-# Patch GDC
+# Patch GCC
 #-------------------------------------------------------------------
-# cd $GCC_NAME
-# cp ../issue_108.patch .
-# patch -p1 -i issue_108.patch
-
-# cp ../issue_114.patch .
-# patch -p1 -i issue_114.patch
-
-# cp ../issue_114-2.patch .
-# patch -p1 -i issue_114-2.patch
-# cd ..
+mkdir -p gcc/config/arm
+cp ../t-arm-elf gcc/config/arm/
 
 # Create GDC build directory
 #-------------------------------------------------------------------
@@ -123,14 +97,10 @@ GCC_BUILD_DIR=gcc-build
 rm -rf $GCC_BUILD_DIR  # remove existing folder
 mkdir $GCC_BUILD_DIR
 
-# Patch GCC
-#-------------------------------------------------------------------
-cp t-arm-elf $GCC_NAME/gcc/config/arm/
-
 # Configure and build GDC
 #-------------------------------------------------------------------
 cd $GCC_BUILD_DIR
-../$GCC_NAME/configure --target=$TARGET --prefix=$PREFIX \
+../gcc/configure --target=$TARGET --prefix=$PREFIX \
   --enable-languages=d      \
   --enable-checking=release \
   --disable-bootstrap       \
@@ -163,7 +133,6 @@ cd ..
 
 # Clean up
 rm -rf $GCC_BUILD_DIR
-rm -rf $GCC_NAME
 rm -rf $GDC_NAME
 
 
