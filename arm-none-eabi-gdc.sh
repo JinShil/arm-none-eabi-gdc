@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright © 2018 Michael V. Franklin
+# Copyright © 2019 Michael V. Franklin
 #
 # This file is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -72,35 +72,28 @@ rm -rf $BINUTILS_NAME
 #===================================================================
 # GDC and GCC
 #===================================================================
-GDC_NAME=gdc
-rm -rf $GDC_NAME              # remove any existing folders
-mkdir $GDC_NAME
-git clone https://github.com/D-Programming-GDC/GDC.git $GDC_NAME
-cd $GDC_NAME
-git checkout $GDC_BRANCH # checkout the appropriate branch
-
-# Get GCC source code
-git submodule update --init --depth 1000 gcc
-
-# Add GDC to GCC
-#-------------------------------------------------------------------
-./setup-gcc.sh gcc
+GCC_NAME=gcc
+rm -rf $GCC_NAME              # remove any existing folders
+mkdir $GCC_NAME
+git clone https://github.com/D-Programming-GDC/gcc.git $GCC_NAME
+cd $GCC_NAME
+git checkout trunk            # checkout the appropriate branch
 
 # Patch GCC
 #-------------------------------------------------------------------
 mkdir -p gcc/config/arm
 cp ../t-arm-elf gcc/config/arm/
 
-# Create GDC build directory
+# Create GCC build directory
 #-------------------------------------------------------------------
 GCC_BUILD_DIR=gcc-build
 rm -rf $GCC_BUILD_DIR  # remove existing folder
 mkdir $GCC_BUILD_DIR
 
-# Configure and build GDC
+# Configure and build GCC with support for D
 #-------------------------------------------------------------------
 cd $GCC_BUILD_DIR
-../gcc/configure --target=$TARGET --prefix=$PREFIX \
+../configure --target=$TARGET --prefix=$PREFIX \
   --enable-languages=d      \
   --enable-checking=release \
   --disable-bootstrap       \
@@ -110,9 +103,7 @@ cd $GCC_BUILD_DIR
   --disable-libphobos       \
   --disable-decimal-float   \
   --disable-libffi          \
-  --disable-libmudflap      \
   --disable-libquadmath     \
-  --disable-libssp          \
   --disable-libstdcxx       \
   --disable-libstdcxx-pch   \
   --disable-nls             \
@@ -133,6 +124,6 @@ cd ..
 
 # Clean up
 rm -rf $GCC_BUILD_DIR
-rm -rf $GDC_NAME
+rm -rf $GCC_NAME
 
 
